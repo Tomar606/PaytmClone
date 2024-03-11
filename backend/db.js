@@ -1,13 +1,8 @@
 const mongoose = require('mongoose');
 mongoose.connect("mongodb+srv://Tomar606:Indianrage14@paytm.y0ibvix.mongodb.net/")
 
-const Schema = new Schema;
 
-const userSchema = new Schema({
-    firstName: { String,
-        required: true
-    },
-    lastName: String,
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -17,27 +12,41 @@ const userSchema = new Schema({
         minLength: 3,
         maxLength: 30
     },
-    email: {
-        type: String,
-        unique: true,
-        required: true,
-    },
-    age: Number,
-    mobileNo: Number,
     password: {
         type: String,
         required: true,
-        minLength: 6,
-        maxLength: 30
+        minLength: 6
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
+    firstName: {
+        type: String,
+        required: true,
+        trim: true,
+        maxLength: 50
+    },
+    lastName: {
+        type: String,
+        required: true,
+        trim: true,
+        maxLength: 50
     }
 });
 
+const accountSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId, // Reference to User model
+        ref: 'User',
+        required: true
+    },
+    balance: {
+        type: Number,
+        required: true
+    }
+});
+
+const Account = mongoose.model('Account', accountSchema);
 const User = mongoose.model('User', userSchema);
 
 module.exports = {
-    User
-}
+	User,
+    Account
+};
